@@ -48,11 +48,40 @@ async function run() {
             const result = await productsColloctions.find().toArray();
             res.send(result);
         })
-        
-        app.get("/products/:id",async(req,res)=>{
-            const id=req.params.id;
-            const query={_id: new ObjectId(id)}
-            const result=await productsColloctions.findOne(query) 
+
+        app.get("/products/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await productsColloctions.findOne(query)
+            res.send(result);
+        })
+
+        app.put("/products/:id", async (req, res) => {
+            const id = req.params.id
+            const query = { _id: new ObjectId(id) };
+            const option = { upsert: true };
+            const updateproduct = req.body
+            const product = {
+                $set: {
+                    name:updateproduct.name,
+                    brand:updateproduct.brand,
+                    type:updateproduct.type,
+                    img:updateproduct.img,
+                    about:updateproduct.about,
+                    price:updateproduct.price,
+                    rating:updateproduct.rating,
+                     
+                }
+
+            }
+            const result=await productsColloctions.updateOne(query, option,product)
+            res.send(result);
+        })
+
+        app.delete("/products/:id",async(req,res)=>{
+            const id =req.params.id;
+            const query={_id:new ObjectId(id)};
+            const result= await productsColloctions.deleteOne(query);
             res.send(result);
         })
         // Send a ping to confirm a successful connection
