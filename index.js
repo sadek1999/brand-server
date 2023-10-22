@@ -10,6 +10,7 @@ app.use(express.json())
 
 // automotive
 // vOn5015Hu4mtEgJJ
+// https://automotive-server-amber.vercel.app
 
 
 const uri = "mongodb+srv://automotive:vOn5015Hu4mtEgJJ@cluster0.xtmekud.mongodb.net/?retryWrites=true&w=majority";
@@ -29,7 +30,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
         const usersCulloction = client.db("userDB").collection("users");
         const productsColloctions = client.db("productsDB").collection("products")
 
