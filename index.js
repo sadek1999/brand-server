@@ -40,6 +40,11 @@ async function run() {
             const result = await usersCulloction.insertOne(user);
             res.send(result)
         })
+        app.get('/users', async (req, res) => {
+            const result = await usersCulloction.find().toArray();
+            res.send(result);
+        })
+
         app.post('/products', async (req, res) => {
             const user = req.body;
             const result = await productsColloctions.insertOne(user);
@@ -47,6 +52,12 @@ async function run() {
         })
         app.get("/products", async (req, res) => {
             const result = await productsColloctions.find().toArray();
+            res.send(result);
+        })
+        app.get('/products/:brand', async (req, res) => {
+            const brandName = req.params.brand;
+            const query = { brand:brandName}
+            const result = await productsColloctions.find(query).toArray();
             res.send(result);
         })
 
@@ -64,25 +75,25 @@ async function run() {
             const updateproduct = req.body
             const product = {
                 $set: {
-                    name:updateproduct.name,
-                    brand:updateproduct.brand,
-                    type:updateproduct.type,
-                    img:updateproduct.img,
-                    about:updateproduct.about,
-                    price:updateproduct.price,
-                    rating:updateproduct.rating,
-                     
+                    name: updateproduct.name,
+                    brand: updateproduct.brand,
+                    type: updateproduct.type,
+                    img: updateproduct.img,
+                    about: updateproduct.about,
+                    price: updateproduct.price,
+                    rating: updateproduct.rating,
+
                 }
 
             }
-            const result=await productsColloctions.updateOne(query, option,product)
+            const result = await productsColloctions.updateOne(query, product, option)
             res.send(result);
         })
 
-        app.delete("/products/:id",async(req,res)=>{
-            const id =req.params.id;
-            const query={_id:new ObjectId(id)};
-            const result= await productsColloctions.deleteOne(query);
+        app.delete("/products/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await productsColloctions.deleteOne(query);
             res.send(result);
         })
         // Send a ping to confirm a successful connection
