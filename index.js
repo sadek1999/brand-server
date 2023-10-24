@@ -44,6 +44,34 @@ async function run() {
             const result = await usersCulloction.find().toArray();
             res.send(result);
         })
+        
+
+        app.get('/users/:email',async(req,res)=>{
+        
+            const userEmail=req.params.email;
+            // console.log(userEmail)
+            const query={email: userEmail};
+            const result= await usersCulloction.findOne(query);
+            res.send(result);
+        })
+      
+        app.put("/users/:email",async(req,res)=>{
+            const id=req.params.email;
+            const query={email: id};
+            const option={upsert:true};
+            const updateUser=req.body
+            // console.log(updateUser)
+            const User={
+                $set: {
+                    
+                    products: updateUser.products
+                   
+                }
+            }
+           
+            const result=await usersCulloction.updateOne(query,User,option)
+            res.send(result)
+        })
 
         app.post('/products', async (req, res) => {
             const user = req.body;
