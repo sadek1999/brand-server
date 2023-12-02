@@ -142,7 +142,14 @@ async function run() {
             if(req.query?.email){
                 query={email:req.query.email}
             }
+            // console.log(query)
             const result=await ordersColloctions.find(query).toArray()
+            res.send(result)
+        })
+        app.delete('/order/:id',async(req,res)=>{
+            const id=req.params.id;
+            const query={_id:new ObjectId(id)}
+            const result=await ordersColloctions.deleteOne(query)
             res.send(result)
         })
 
