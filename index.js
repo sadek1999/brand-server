@@ -5,7 +5,9 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 5001;
 
-app.use(cors())
+app.use(cors({
+    origin:['https://automotive-dfe92.web.app','http://localhost:5173/']
+}))
 app.use(express.json())
 
 // automotive
