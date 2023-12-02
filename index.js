@@ -11,6 +11,7 @@ app.use(express.json())
 // automotive
 // vOn5015Hu4mtEgJJ
 // https://automotive-server-amber.vercel.app
+// https://miro.medium.com/v2/resize:fit:720/format:webp/0*55K3702CaKaC9A8K.png
 
 
 const uri = "mongodb+srv://automotive:vOn5015Hu4mtEgJJ@cluster0.xtmekud.mongodb.net/?retryWrites=true&w=majority";
@@ -33,8 +34,10 @@ async function run() {
         // await client.connect();
         const usersCulloction = client.db("userDB").collection("users");
         const productsColloctions = client.db("productsDB").collection("products")
+        const ordersColloctions = client.db("productsDB").collection("orders")
+        // const usersColloctions = client.db("productsDB").collection("users")
 
-
+// api for user --------------------------------------------------------------------
         app.post('/users', async (req, res) => {
             const user = req.body;
             const result = await usersCulloction.insertOne(user);
@@ -72,6 +75,8 @@ async function run() {
             const result=await usersCulloction.updateOne(query,User,option)
             res.send(result)
         })
+
+        // Api for products --------------------------------------------------------
 
         app.post('/products', async (req, res) => {
             const user = req.body;
@@ -124,6 +129,23 @@ async function run() {
             const result = await productsColloctions.deleteOne(query);
             res.send(result);
         })
+
+        // Api for orders --------------- --------------------------
+        app.post('/order',async(req,res)=>{
+            const order=req.body;
+            const result=await ordersColloctions.insertOne(order)
+            res.send(result)
+        })
+         
+        app.get('/order',async(req,res)=>{
+            let query={};
+            if(req.query?.email){
+                query={email:req.query.email}
+            }
+            const result=await ordersColloctions.find(query).toArray()
+            res.send(result)
+        })
+
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
